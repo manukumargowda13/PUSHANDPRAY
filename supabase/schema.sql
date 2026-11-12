@@ -1,6 +1,6 @@
 -- ==============================================================================
 -- India Green Grid - Database Schema (PostgreSQL / Supabase)
--- Hackathon: CodeSpark 2026 (12-Hour Sprint)
+-- Platform: National Clean Energy Decision-Support Platform
 -- Framework: Next.js 15 App Router + Supabase + Fallback JSON snapshots
 -- ==============================================================================
 

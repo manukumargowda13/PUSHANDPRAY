@@ -1,6 +1,6 @@
 # Data Provenance and Source Registry
 
-**Project**: India Green Grid (CodeSpark 2026 Hackathon)  
+**Project**: India Green Grid — National Clean Energy Decision-Support Platform  
 **Objective**: Comprehensive audit trail of statutory Indian public energy datasets used across D1–D4 modules.  
 **Rule**: Transparent attribution with live URLs, access dates, update frequencies, and statutory authority.  
 

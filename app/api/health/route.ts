@@ -5,10 +5,11 @@ export async function GET() {
   return NextResponse.json({
     status: "ok",
     app: "India Green Grid",
-    version: "0.1.0-mvp",
-    hackathon: "CodeSpark 2026",
+    version: "1.0.0",
+    platform: "National Clean Energy Decision-Support Platform",
     timestamp: new Date().toISOString(),
     supabase_configured: isSupabaseConfigured(),
     offline_fallback_ready: true,
+    data_sources: ["CEA", "NPP", "Grid-India", "MNRE"],
   });
 }

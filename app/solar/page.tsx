@@ -4,7 +4,6 @@ import React, { useState, useEffect, useMemo } from "react";
 import {
   AreaChart,
   Area,
-  LineChart,
   Line,
   XAxis,
   YAxis,
@@ -15,22 +14,19 @@ import {
 } from "recharts";
 import {
   Sun,
-  Zap,
-  TrendingUp,
   Leaf,
   Trees,
   Award,
   AlertCircle,
-  HelpCircle,
-  ShieldCheck,
-  CheckCircle2,
   Sliders,
-  ArrowRight,
 } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { ChartCard } from "@/components/ChartCard";
 import { DataFreshnessBadge } from "@/components/DataFreshnessBadge";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { TermExplainer } from "@/components/TermExplainer";
 import { useUserRole } from "@/lib/role-context";
+import { useLanguage } from "@/lib/i18n/language-context";
 import { calculateSolarRoi, SolarCalculationResult } from "@/lib/calculators/solar";
 import { formatIndianNumber, formatINR, formatPercent } from "@/lib/utils";
 import tariffConfig from "@/config/tariffs.json";
@@ -38,6 +34,7 @@ import subsidyConfig from "@/config/subsidy.json";
 
 export default function SolarPage() {
   const { roleConfig } = useUserRole();
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
 
   // Form States
@@ -74,49 +71,56 @@ export default function SolarPage() {
   return (
     <div className="space-y-8 pb-12">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-ivory-200 pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded border border-amber-200">
+            <span className="text-xs font-mono font-bold bg-saffron-50 text-saffron-800 px-2.5 py-0.5 rounded border border-saffron-200">
               Module D3
             </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-navy-950 tracking-tight">
               Rooftop Solar ROI & PM Surya Ghar Subsidy Calculator
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl">
+          <p className="text-xs sm:text-sm text-navy-700 mt-1 max-w-3xl">
             Evaluate optimal system sizing (kW), calculate <strong>PM Surya Ghar</strong> Central Financial Assistance (CFA) + state subsidies, and forecast 25-year financial savings factoring in panel degradation and tariff escalation.
           </p>
         </div>
 
-        <DataFreshnessBadge
-          source={subsidyConfig.source}
-          lastUpdated={subsidyConfig.last_updated}
-        />
+        <div className="flex flex-wrap items-center gap-2">
+          <TermExplainer termKey="cfa_subsidy" variant="badge" label="Subsidy Guide" />
+          <DataFreshnessBadge
+            source={subsidyConfig.source}
+            lastUpdated={subsidyConfig.last_updated}
+          />
+        </div>
       </div>
 
       {/* Main Grid: Inputs vs Summary */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Inputs (5 Cols) */}
-        <div className="lg:col-span-5 rounded-xl border border-slate-200 bg-white p-6 shadow-xs space-y-6">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <Sun className="w-4 h-4 text-amber-500" />
+        <div className="lg:col-span-5 rounded-2xl border border-ivory-300 bg-white p-6 shadow-warm space-y-6">
+          <div className="flex items-center justify-between border-b border-ivory-200 pb-3">
+            <h2 className="text-base font-bold text-navy-950 flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-saffron-50 text-saffron-700">
+                <Sun className="w-4 h-4" />
+              </div>
               <span>Solar Sizing Parameters</span>
             </h2>
-            <span className="text-[11px] font-mono text-slate-400">Pure TypeScript Engine</span>
+            <span className="text-[11px] font-semibold text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+              MNRE Benchmark Engine
+            </span>
           </div>
 
           <div className="space-y-4 text-xs">
             {/* State Selector */}
             <div>
-              <label className="block font-semibold text-slate-800 mb-1">
-                State Jurisdiction (SERC Slabs):
+              <label className="block font-bold text-navy-900 mb-1">
+                State Jurisdiction (SERC Tariff Slabs):
               </label>
               <select
                 value={state}
                 onChange={(e) => setState(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full rounded-xl border border-ivory-300 bg-ivory-50 px-3 py-2 text-xs font-bold text-navy-950 focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 {stateList.map((s) => (
                   <option key={s} value={s}>
@@ -124,14 +128,14 @@ export default function SolarPage() {
                   </option>
                 ))}
               </select>
-              <p className="text-[11px] text-slate-400 mt-1">
+              <p className="text-[11px] text-navy-700 mt-1">
                 Average DISCOM Tariff: ₹{result.tariffDetails.averageTariffInr.toFixed(2)}/kWh
               </p>
             </div>
 
             {/* Input Type Toggle */}
             <div>
-              <label className="block font-semibold text-slate-800 mb-1">
+              <label className="block font-bold text-navy-900 mb-1">
                 Consumption Metric:
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -141,10 +145,10 @@ export default function SolarPage() {
                     setInputType("bill");
                     setValue(3500);
                   }}
-                  className={`py-2 px-3 rounded-lg text-xs font-semibold border text-center transition-all ${
+                  className={`py-2 px-3 rounded-xl text-xs font-bold border text-center transition-all ${
                     inputType === "bill"
-                      ? "bg-amber-500 text-white border-amber-600 shadow-xs"
-                      : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+                      ? "bg-navy-900 text-ivory border-navy-900 shadow-2xs"
+                      : "bg-ivory-50 text-navy-800 border-ivory-300 hover:bg-ivory-100"
                   }`}
                 >
                   Monthly Bill (₹)
@@ -155,10 +159,10 @@ export default function SolarPage() {
                     setInputType("units");
                     setValue(350);
                   }}
-                  className={`py-2 px-3 rounded-lg text-xs font-semibold border text-center transition-all ${
+                  className={`py-2 px-3 rounded-xl text-xs font-bold border text-center transition-all ${
                     inputType === "units"
-                      ? "bg-amber-500 text-white border-amber-600 shadow-xs"
-                      : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+                      ? "bg-navy-900 text-ivory border-navy-900 shadow-2xs"
+                      : "bg-ivory-50 text-navy-800 border-ivory-300 hover:bg-ivory-100"
                   }`}
                 >
                   Monthly Units (kWh)
@@ -169,10 +173,10 @@ export default function SolarPage() {
             {/* Value Slider & Input */}
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="font-semibold text-slate-800">
+                <label className="font-bold text-navy-900">
                   {inputType === "bill" ? "Average Monthly Electricity Bill:" : "Monthly Units Consumed:"}
                 </label>
-                <span className="font-mono font-bold text-amber-700 text-sm">
+                <span className="font-mono font-extrabold text-saffron-800 text-sm">
                   {inputType === "bill" ? formatINR(value) : `${value} kWh`}
                 </span>
               </div>
@@ -183,9 +187,9 @@ export default function SolarPage() {
                 step={inputType === "bill" ? 250 : 25}
                 value={value}
                 onChange={(e) => setValue(Number(e.target.value))}
-                className="w-full accent-amber-500 cursor-pointer"
+                className="w-full accent-teal-700 cursor-pointer"
               />
-              <div className="mt-1 flex justify-between text-[10px] text-slate-400 font-mono">
+              <div className="mt-1 flex justify-between text-[10px] text-slate-500 font-mono">
                 <span>{inputType === "bill" ? "₹500" : "50 kWh"}</span>
                 <span>{inputType === "bill" ? "₹25,000" : "2,500 kWh"}</span>
               </div>
@@ -194,10 +198,10 @@ export default function SolarPage() {
             {/* Roof Area Input */}
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="font-semibold text-slate-800">
+                <label className="font-bold text-navy-900">
                   Available Shadow-Free Rooftop Area:
                 </label>
-                <span className="font-mono font-bold text-slate-800 text-xs">
+                <span className="font-mono font-extrabold text-navy-950 text-xs">
                   {roofArea} sq. ft
                 </span>
               </div>
@@ -208,15 +212,15 @@ export default function SolarPage() {
                 step="50"
                 value={roofArea}
                 onChange={(e) => setRoofArea(Number(e.target.value))}
-                className="w-full accent-amber-500 cursor-pointer"
+                className="w-full accent-teal-700 cursor-pointer"
               />
-              <div className="mt-1 flex justify-between text-[10px] text-slate-400 font-mono">
+              <div className="mt-1 flex justify-between text-[10px] text-slate-500 font-mono">
                 <span>100 sq.ft (1 kW)</span>
                 <span>2,500 sq.ft (25 kW)</span>
               </div>
               {result.roofAreaConstrained && (
-                <div className="mt-2 flex items-center gap-1.5 text-[11px] text-amber-800 bg-amber-50 p-2 rounded border border-amber-200">
-                  <AlertCircle className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+                <div className="mt-2 flex items-center gap-1.5 text-[11px] text-saffron-900 bg-saffron-50 p-2.5 rounded-lg border border-saffron-200">
+                  <AlertCircle className="w-3.5 h-3.5 text-saffron-700 flex-shrink-0" />
                   <span>
                     System capped at {result.recommendedKw} kW due to {roofArea} sq.ft roof limit (100 sq.ft/kW).
                   </span>
@@ -225,25 +229,25 @@ export default function SolarPage() {
             </div>
 
             {/* Advanced Settings Accordion */}
-            <div className="border-t border-slate-100 pt-3">
+            <div className="border-t border-ivory-200 pt-3">
               <button
                 type="button"
                 onClick={() => setShowAdvanced(!showAdvanced)}
-                className="flex items-center justify-between w-full text-slate-600 hover:text-slate-900 text-xs font-semibold"
+                className="flex items-center justify-between w-full text-navy-800 hover:text-navy-950 text-xs font-bold"
               >
                 <span className="flex items-center gap-1.5">
-                  <Sliders className="w-3.5 h-3.5" />
+                  <Sliders className="w-3.5 h-3.5 text-teal-700" />
                   <span>Advanced Parameters (Degradation & Inflation)</span>
                 </span>
                 <span>{showAdvanced ? "▲" : "▼"}</span>
               </button>
 
               {showAdvanced && (
-                <div className="mt-3 space-y-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                <div className="mt-3 space-y-3 bg-ivory-50 p-3.5 rounded-xl border border-ivory-300">
                   <div>
                     <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-slate-600">Annual Tariff Escalation Rate:</span>
-                      <span className="font-mono font-bold">{tariffInflation}%</span>
+                      <span className="text-navy-700 font-medium">Annual Tariff Escalation Rate:</span>
+                      <span className="font-mono font-bold text-navy-950">{tariffInflation}%</span>
                     </div>
                     <input
                       type="range"
@@ -252,13 +256,13 @@ export default function SolarPage() {
                       step="0.5"
                       value={tariffInflation}
                       onChange={(e) => setTariffInflation(Number(e.target.value))}
-                      className="w-full accent-amber-600"
+                      className="w-full accent-teal-700"
                     />
                   </div>
                   <div>
                     <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-slate-600">Annual Panel Degradation Rate:</span>
-                      <span className="font-mono font-bold">{panelDegradation}%</span>
+                      <span className="text-navy-700 font-medium">Annual Panel Degradation Rate:</span>
+                      <span className="font-mono font-bold text-navy-950">{panelDegradation}%</span>
                     </div>
                     <input
                       type="range"
@@ -267,7 +271,7 @@ export default function SolarPage() {
                       step="0.1"
                       value={panelDegradation}
                       onChange={(e) => setPanelDegradation(Number(e.target.value))}
-                      className="w-full accent-amber-600"
+                      className="w-full accent-teal-700"
                     />
                   </div>
                 </div>
@@ -279,31 +283,34 @@ export default function SolarPage() {
         {/* Right Financial & Sizing Breakdown (7 Cols) */}
         <div className="lg:col-span-7 space-y-6">
           {/* Recommended System Card */}
-          <div className="rounded-xl border border-amber-300 bg-gradient-to-br from-amber-50/90 to-yellow-50/70 p-6 shadow-xs">
+          <div className="rounded-2xl border border-ivory-300 bg-white p-6 shadow-warm">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-800">
-                  Optimal System Sizing
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-extrabold uppercase tracking-wider text-saffron-800">
+                    Optimal System Sizing
+                  </span>
+                  <TermExplainer termKey="net_metering" variant="badge" label="Net Metering" />
+                </div>
                 <div className="mt-1 flex items-baseline gap-2">
-                  <span className="text-3xl sm:text-4xl font-extrabold text-slate-950">
+                  <span className="text-3xl sm:text-4xl font-extrabold text-navy-950">
                     {result.recommendedKw} kW
                   </span>
-                  <span className="text-xs text-slate-600 font-medium">
+                  <span className="text-xs text-navy-700 font-medium">
                     (Requires ~{result.roofAreaRequiredSqFt} sq. ft roof)
                   </span>
                 </div>
-                <p className="text-xs text-slate-600 mt-1">
+                <p className="text-xs text-navy-700 mt-1">
                   Generates ~<strong>{formatIndianNumber(result.annualGenerationYear1Kwh)} kWh/year</strong> (~{result.dailyGenerationAverageKwh} units/day). Offsets estimated monthly consumption of {result.monthlyUnits} units.
                 </p>
               </div>
 
-              <div className="text-right sm:border-l sm:border-amber-200 sm:pl-6">
-                <span className="text-xs font-semibold text-slate-500">Payback Period</span>
-                <p className="text-2xl font-extrabold text-emerald-800 font-mono">
+              <div className="text-right sm:border-l sm:border-ivory-200 sm:pl-6">
+                <span className="text-xs font-bold text-slate-500 uppercase">Payback Period</span>
+                <p className="text-2xl font-extrabold text-naturalGreen-800 font-mono">
                   {result.paybackPeriodYears} Years
                 </p>
-                <span className="text-[11px] text-emerald-700 font-medium">
+                <span className="text-[11px] text-teal-800 font-semibold">
                   Then free power for 20+ years
                 </span>
               </div>
@@ -323,7 +330,8 @@ export default function SolarPage() {
               value={formatINR(result.centralSubsidyInr, true)}
               subtitle="Direct Central CFA"
               change={{ value: "Up to ₹78,000", trend: "up" }}
-              variant="emerald"
+              variant="teal"
+              explainerKey="cfa_subsidy"
             />
             <StatCard
               title="Net Investment"
@@ -336,42 +344,45 @@ export default function SolarPage() {
               value={formatINR(result.firstYearSavingsInr, true)}
               subtitle="Electricity bill saved"
               change={{ value: "+4.5% annual tariff growth", trend: "up" }}
-              variant="blue"
+              variant="navy"
             />
           </div>
 
           {/* Subsidy Calculation Breakdown Box */}
-          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs text-xs space-y-3">
-            <h3 className="font-bold text-slate-900 flex items-center gap-1.5">
-              <Award className="w-4 h-4 text-emerald-600" />
-              <span>PM Surya Ghar: Muft Bijli Yojana Subsidy Breakdown</span>
-            </h3>
+          <div className="rounded-2xl border border-ivory-300 bg-white p-5 shadow-warm text-xs space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="font-extrabold text-navy-950 flex items-center gap-1.5">
+                <Award className="w-4 h-4 text-teal-700" />
+                <span>PM Surya Ghar: Muft Bijli Yojana Subsidy Breakdown</span>
+              </h3>
+              <TermExplainer termKey="cfa_subsidy" variant="badge" />
+            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-slate-700">
-              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-                <span className="text-slate-500 block text-[11px]">Central CFA</span>
-                <span className="font-bold text-emerald-800 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-navy-800">
+              <div className="p-3 rounded-xl bg-ivory-50 border border-ivory-200">
+                <span className="text-slate-500 block text-[11px] font-medium">Central CFA</span>
+                <span className="font-extrabold text-teal-900 text-sm">
                   {formatINR(result.centralSubsidyInr)}
                 </span>
                 <span className="block text-[10px] text-slate-500 mt-0.5">
                   ₹30k/kW (1-2kW) + ₹18k (3kW)
                 </span>
               </div>
-              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-                <span className="text-slate-500 block text-[11px]">{state} State Top-up</span>
-                <span className="font-bold text-sky-800 text-sm">
+              <div className="p-3 rounded-xl bg-ivory-50 border border-ivory-200">
+                <span className="text-slate-500 block text-[11px] font-medium">{state} State Top-up</span>
+                <span className="font-extrabold text-navy-950 text-sm">
                   {formatINR(result.stateSubsidyInr)}
                 </span>
                 <span className="block text-[10px] text-slate-500 mt-0.5">
                   State policy incentives
                 </span>
               </div>
-              <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200">
-                <span className="text-emerald-800 block text-[11px] font-semibold">Total Benefit</span>
-                <span className="font-bold text-emerald-900 text-sm">
+              <div className="p-3 rounded-xl bg-teal-50/70 border border-teal-200">
+                <span className="text-teal-900 block text-[11px] font-bold">Total Benefit</span>
+                <span className="font-extrabold text-teal-950 text-sm">
                   {formatINR(result.totalSubsidyInr)}
                 </span>
-                <span className="block text-[10px] text-emerald-700 mt-0.5">
+                <span className="block text-[10px] text-teal-800 mt-0.5 font-medium">
                   {formatPercent((result.totalSubsidyInr / result.grossSystemCostInr) * 100)} of gross cost funded
                 </span>
               </div>
@@ -395,27 +406,33 @@ export default function SolarPage() {
             >
               <defs>
                 <linearGradient id="colorSavings" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#059669" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#059669" stopOpacity={0.05} />
+                  <stop offset="5%" stopColor="#0F766E" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#0F766E" stopOpacity={0.05} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="year" tickFormatter={(y) => `Yr ${y}`} fontSize={11} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
+              <XAxis dataKey="year" tickFormatter={(y) => `Yr ${y}`} fontSize={11} stroke="#64748B" />
               <YAxis
                 tickFormatter={(val) => `₹${(val / 100000).toFixed(1)}L`}
                 fontSize={11}
+                stroke="#64748B"
               />
               <Tooltip
                 formatter={(val: any, name: any) => [formatINR(Number(val)), name]}
                 labelFormatter={(yr) => `Year ${yr} Projection`}
-                contentStyle={{ backgroundColor: "#ffffff", borderRadius: "8px", fontSize: "12px", border: "1px solid #e2e8f0" }}
+                contentStyle={{
+                  backgroundColor: "#ffffff",
+                  borderRadius: "10px",
+                  fontSize: "12px",
+                  border: "1px solid #CBD5E1",
+                }}
               />
               <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }} />
               <Area
                 type="monotone"
                 dataKey="cumulativeSavingsInr"
                 name="Cumulative Net Savings (₹)"
-                stroke="#059669"
+                stroke="#0F766E"
                 strokeWidth={2.5}
                 fillOpacity={1}
                 fill="url(#colorSavings)"
@@ -424,7 +441,7 @@ export default function SolarPage() {
                 type="monotone"
                 dataKey="annualSavingsInr"
                 name="Annual Bill Savings (₹)"
-                stroke="#eab308"
+                stroke="#D97706"
                 strokeWidth={1.5}
                 dot={false}
               />
@@ -434,30 +451,33 @@ export default function SolarPage() {
       </ChartCard>
 
       {/* Environmental Impact Banner */}
-      <div className="rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 p-6 shadow-xs">
+      <div className="rounded-2xl border border-ivory-300 bg-white p-6 shadow-warm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <div className="p-3 rounded-2xl bg-emerald-600 text-white shadow-md shadow-emerald-500/20">
-              <Leaf className="w-8 h-8" />
+            <div className="p-3.5 rounded-2xl bg-teal-50 text-teal-800 border border-teal-200">
+              <Leaf className="w-8 h-8 text-teal-700" />
             </div>
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-800">
-                CEA Grid Emission Baseline Abatement
-              </span>
-              <h3 className="text-xl font-bold text-slate-900 mt-0.5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-teal-800">
+                  CEA Grid Emission Baseline Abatement
+                </span>
+                <TermExplainer termKey="co2_factor" variant="badge" label="Emission Factor" />
+              </div>
+              <h3 className="text-xl font-extrabold text-navy-950 mt-0.5">
                 {result.co2AvoidedTonsPerYear} Metric Tons of CO₂ Avoided Annually
               </h3>
-              <p className="text-xs text-slate-600 mt-1 max-w-xl">
+              <p className="text-xs text-navy-700 mt-1 max-w-xl">
                 Calculated using the official CEA Baseline Emission Factor of <strong>0.716 kg CO₂/kWh</strong>. Over 25 years, this rooftop system avoids <strong>{result.twentyFiveYearCo2AvoidedTons} tons</strong> of greenhouse gas emissions.
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 self-start sm:self-center bg-white px-5 py-3 rounded-xl border border-emerald-200">
-            <Trees className="w-7 h-7 text-emerald-600" />
+          <div className="flex items-center gap-4 self-start sm:self-center bg-ivory-50 px-5 py-3 rounded-xl border border-ivory-300 shadow-2xs">
+            <Trees className="w-7 h-7 text-naturalGreen-700" />
             <div>
-              <span className="text-[11px] text-slate-500 uppercase font-semibold">Equivalent To</span>
-              <p className="text-xl font-extrabold text-slate-900 font-mono">
+              <span className="text-[11px] text-slate-500 uppercase font-bold">Equivalent To</span>
+              <p className="text-xl font-extrabold text-navy-950 font-mono">
                 {result.treesEquivalent} Trees Planted
               </p>
             </div>

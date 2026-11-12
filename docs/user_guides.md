@@ -1,6 +1,6 @@
 # Stakeholder User Guides - India Green Grid
 
-**Platform**: India Green Grid (CodeSpark 2026 Hackathon MVP)  
+**Platform**: India Green Grid — National Clean Energy Decision-Support Platform  
 **Access Architecture**: Role-based decision support with stateful persona switching  
 
 ---

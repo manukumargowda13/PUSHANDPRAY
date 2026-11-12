@@ -3,48 +3,66 @@
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
+  /* Warm Ivory background & Midnight Navy text */
+  --background: 40 33% 97%; /* #FBF9F4 */
+  --foreground: 215 56% 14%; /* #0F2137 */
+  
   --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
+  --card-foreground: 215 56% 14%;
+  
   --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 158 93% 30%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 199 89% 48%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 158 93% 30%;
-  --radius: 0.5rem;
+  --popover-foreground: 215 56% 14%;
+  
+  --primary: 215 56% 14%; /* Midnight Navy */
+  --primary-foreground: 40 33% 97%; /* Warm Ivory */
+  
+  --secondary: 175 77% 26%; /* Muted Teal #0F766E */
+  --secondary-foreground: 0 0% 100%;
+  
+  --muted: 38 25% 93%; /* #F3EFE6 */
+  --muted-foreground: 215 20% 40%;
+  
+  --accent: 32 95% 44%; /* Saffron / Subtle Amber #D97706 */
+  --accent-foreground: 0 0% 100%;
+  
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 98%;
+  
+  --border: 38 22% 87%; /* #E8E2D5 */
+  --input: 38 22% 87%;
+  --ring: 215 56% 25%;
+  --radius: 0.625rem;
 }
 
-.dark {
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-  --card: 222.2 84% 4.9%;
-  --card-foreground: 210 40% 98%;
-  --popover: 222.2 84% 4.9%;
-  --popover-foreground: 210 40% 98%;
-  --primary: 158 93% 36%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 199 89% 48%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 158 93% 36%;
+/* Accessibility: High Contrast Mode */
+.high-contrast {
+  --background: 0 0% 100% !important;
+  --foreground: 0 0% 0% !important;
+  --card: 0 0% 100% !important;
+  --card-foreground: 0 0% 0% !important;
+  --border: 0 0% 0% !important;
+  --primary: 0 0% 0% !important;
+  --primary-foreground: 0 0% 100% !important;
+  --muted: 0 0% 90% !important;
+  --muted-foreground: 0 0% 15% !important;
+}
+
+.high-contrast * {
+  border-color: #000000 !important;
+}
+
+/* Accessibility: Large Text Mode */
+.large-text {
+  font-size: 112.5% !important;
+}
+
+.large-text p,
+.large-text span,
+.large-text label,
+.large-text input,
+.large-text select,
+.large-text button {
+  font-size: 1.05em !important;
 }
 
 * {
@@ -54,5 +72,37 @@
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-feature-settings: "rlig" 1, "calt" 1;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle Indian Tricolor National Ribbon Accent */
+.national-accent-bar {
+  background: linear-gradient(
+    90deg,
+    #ea580c 0%,
+    #ea580c 33.3%,
+    #faf8f3 33.3%,
+    #faf8f3 66.6%,
+    #15803d 66.6%,
+    #15803d 100%
+  );
+  height: 3px;
+  width: 100%;
+}
+
+/* Focus and readability enhancements */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid #0f766e;
+  outline-offset: 2px;
+}
+
+/* Subtle heritage card pattern */
+.pattern-grid-warm {
+  background-image: radial-gradient(#d6cebf 0.75px, transparent 0.75px);
+  background-size: 18px 18px;
 }

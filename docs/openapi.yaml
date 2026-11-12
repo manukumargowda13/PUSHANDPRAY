@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: India Green Grid API
-  description: Public Energy Decision-Support Platform API (CodeSpark 2026 Hackathon MVP). Exposes rooftop solar sizing and subsidy calculations, energy mix snapshots, and system health status.
+  description: Public Energy Decision-Support Platform API. Exposes rooftop solar sizing and subsidy calculations, energy mix snapshots, and system health status.
   version: 1.0.0
   contact:
     name: India Green Grid Engineering Team
@@ -34,10 +34,10 @@ paths:
                     example: India Green Grid
                   version:
                     type: string
-                    example: 0.1.0-mvp
-                  hackathon:
+                    example: 1.0.0
+                  platform:
                     type: string
-                    example: CodeSpark 2026
+                    example: National Clean Energy Decision-Support Platform
                   timestamp:
                     type: string
                     format: date-time

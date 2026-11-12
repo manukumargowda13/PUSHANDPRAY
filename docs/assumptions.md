@@ -1,6 +1,6 @@
 # Technical and Financial Assumptions - India Green Grid
 
-**Project**: India Green Grid (CodeSpark 2026 Hackathon)  
+**Project**: India Green Grid — National Clean Energy Decision-Support Platform  
 **Governance Principle**: All assumptions are transparently stored in editable JSON configuration files in `/config`, ensuring zero hard-coded mathematical constants in application code.
 
 ---

@@ -1,6 +1,6 @@
 -- ==============================================================================
 -- India Green Grid - Database Seed Data (PostgreSQL / Supabase)
--- Hackathon: CodeSpark 2026
+-- Platform: National Clean Energy Decision-Support Platform
 -- ==============================================================================
 
 -- 1. Insert Sources

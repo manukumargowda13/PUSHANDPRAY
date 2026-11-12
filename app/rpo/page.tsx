@@ -11,29 +11,30 @@ import {
   Legend,
   ResponsiveContainer,
   ReferenceDot,
-  ReferenceLine,
 } from "recharts";
 import {
   ShieldCheck,
-  AlertTriangle,
   CheckCircle2,
   XCircle,
-  HelpCircle,
   Scale,
   Sparkles,
-  ArrowRight,
   Calculator,
+  Info,
 } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { ChartCard } from "@/components/ChartCard";
 import { DataFreshnessBadge } from "@/components/DataFreshnessBadge";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { TermExplainer } from "@/components/TermExplainer";
 import { useUserRole } from "@/lib/role-context";
+import { useLanguage } from "@/lib/i18n/language-context";
 import { calculateRpoCompliance, RpoOutput } from "@/lib/calculators/rpo";
-import { formatIndianNumber, formatPercent } from "@/lib/utils";
+import { formatIndianNumber } from "@/lib/utils";
 import rpoConfig from "@/config/rpo_trajectory.json";
 
 export default function RpoPage() {
   const { roleConfig } = useUserRole();
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
 
   // Form Inputs
@@ -85,37 +86,47 @@ export default function RpoPage() {
   return (
     <div className="space-y-8 pb-12">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-ivory-200 pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-bold bg-sky-100 text-sky-800 px-2 py-0.5 rounded border border-sky-200">
+            <span className="text-xs font-mono font-bold bg-navy-50 text-navy-850 px-2.5 py-0.5 rounded border border-navy-200">
               Module D2
             </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-navy-950 tracking-tight">
               RPO / RCO Statutory Compliance Tracker
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl">
+          <p className="text-xs sm:text-sm text-navy-700 mt-1 max-w-3xl">
             Audit compliance percentage, calculate required clean energy volume, and determine shortfall against the statutory <strong>Renewable Consumption Obligation (RCO)</strong> trajectory.
           </p>
         </div>
 
-        <DataFreshnessBadge
-          source={rpoConfig.authority}
-          lastUpdated={rpoConfig.last_updated}
-        />
+        <div className="flex flex-wrap items-center gap-2">
+          <TermExplainer termKey="rco_obligation" variant="badge" label="What is RCO?" />
+          <DataFreshnessBadge
+            source={rpoConfig.authority}
+            lastUpdated={rpoConfig.last_updated}
+          />
+        </div>
       </div>
 
       {/* Statutory Framework Transition Alert */}
-      <div className="rounded-xl border border-sky-200 bg-sky-50/70 p-4 text-xs text-sky-950">
-        <div className="flex items-start gap-2.5">
-          <Scale className="w-4 h-4 text-sky-700 flex-shrink-0 mt-0.5" />
+      <div className="rounded-2xl border border-ivory-300 bg-white p-5 shadow-warm text-xs text-navy-950">
+        <div className="flex items-start gap-3">
+          <div className="p-2 rounded-xl bg-teal-50 text-teal-800 border border-teal-200">
+            <Scale className="w-5 h-5 text-teal-700" />
+          </div>
           <div className="space-y-1">
-            <p className="font-bold text-sky-900">
-              Regulatory Framework Note: Transition to Renewable Consumption Obligation (RCO)
-            </p>
-            <p className="text-slate-700 leading-relaxed">
-              Under the amended <strong>Energy Conservation Act, 2022</strong>, the regulatory regime has evolved from state-by-state Renewable Purchase Obligations (RPO) to a <strong>unified national Renewable Consumption Obligation (RCO)</strong> notified by the Ministry of Power and Bureau of Energy Efficiency (BEE). All DISCOMs, open-access industrial users, and designated commercial consumers must fulfill mandatory minimum clean energy procurement quotas.
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-extrabold text-navy-950 text-sm">
+                Regulatory Framework: Transition from RPO to National RCO
+              </span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                Energy Conservation Act 2022
+              </span>
+            </div>
+            <p className="text-navy-700 leading-relaxed text-xs">
+              Under the amended <strong>Energy Conservation Act, 2022</strong>, the regulatory regime has evolved from fragmented state-by-state Renewable Purchase Obligations (RPO) into a <strong>unified national Renewable Consumption Obligation (RCO)</strong>. All DISCOMs, open-access commercial/industrial users, and designated consumers must meet these statutory quotas or purchase Renewable Energy Certificates (RECs).
             </p>
           </div>
         </div>
@@ -124,27 +135,31 @@ export default function RpoPage() {
       {/* Calculator Form & Immediate Output Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Form: Inputs (5 Cols) */}
-        <div className="lg:col-span-5 rounded-xl border border-slate-200 bg-white p-6 shadow-xs space-y-6">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div className="lg:col-span-5 rounded-2xl border border-ivory-300 bg-white p-6 shadow-warm space-y-6">
+          <div className="flex items-center justify-between border-b border-ivory-200 pb-3">
             <div className="flex items-center gap-2">
-              <Calculator className="w-4 h-4 text-sky-600" />
-              <h2 className="text-base font-bold text-slate-900">
+              <div className="p-1.5 rounded-lg bg-navy-50 text-navy-850">
+                <Calculator className="w-4 h-4 text-navy-850" />
+              </div>
+              <h2 className="text-base font-bold text-navy-950">
                 Consumption & Procurement Input
               </h2>
             </div>
-            <span className="text-[11px] text-slate-400 font-mono">Formula Driven</span>
+            <span className="text-[11px] text-teal-800 font-semibold bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+              Statutory Formula
+            </span>
           </div>
 
           <div className="space-y-4 text-xs">
             {/* Year Selector */}
             <div>
-              <label className="block font-semibold text-slate-800 mb-1">
+              <label className="block font-bold text-navy-900 mb-1">
                 Target Compliance Financial Year:
               </label>
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                className="w-full rounded-xl border border-ivory-300 bg-ivory-50 px-3 py-2 text-xs font-bold text-navy-950 focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 {rpoConfig.trajectory.map((t) => (
                   <option key={t.year} value={t.year}>
@@ -156,13 +171,13 @@ export default function RpoPage() {
 
             {/* Entity Type */}
             <div>
-              <label className="block font-semibold text-slate-800 mb-1">
+              <label className="block font-bold text-navy-900 mb-1">
                 Obligated Entity Classification:
               </label>
               <select
                 value={entityType}
                 onChange={(e) => setEntityType(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                className="w-full rounded-xl border border-ivory-300 bg-ivory-50 px-3 py-2 text-xs font-medium text-navy-950 focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 <option value="Open Access Consumer">Open Access Consumer (&gt;100 kW under GEOA 2022)</option>
                 <option value="DISCOM">Power Distribution Company (DISCOM)</option>
@@ -174,10 +189,10 @@ export default function RpoPage() {
             {/* Total Consumption */}
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="font-semibold text-slate-800">
+                <label className="font-bold text-navy-900">
                   Total Electricity Consumption:
                 </label>
-                <span className="font-mono font-bold text-slate-900">
+                <span className="font-mono font-extrabold text-navy-950">
                   {formatIndianNumber(totalConsumption)} kWh
                 </span>
               </div>
@@ -187,7 +202,7 @@ export default function RpoPage() {
                 step="50000"
                 value={totalConsumption}
                 onChange={(e) => setTotalConsumption(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-sky-500"
+                className="w-full rounded-xl border border-ivory-300 px-3 py-2 text-xs font-mono font-bold text-navy-950 focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
               {/* Presets */}
               <div className="mt-2 flex flex-wrap gap-1.5">
@@ -196,25 +211,29 @@ export default function RpoPage() {
                     key={p.value}
                     type="button"
                     onClick={() => setTotalConsumption(p.value)}
-                    className={`px-2 py-1 rounded text-[10px] font-medium transition-colors ${
+                    className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-colors ${
                       totalConsumption === p.value
-                        ? "bg-sky-600 text-white font-bold"
-                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        ? "bg-navy-900 text-ivory font-bold shadow-2xs"
+                        : "bg-ivory-100 text-navy-800 hover:bg-ivory-200 border border-ivory-200"
                     }`}
                   >
                     {p.label}
                   </button>
                 ))}
               </div>
+              <div className="mt-1.5 flex items-center gap-1 text-[11px] text-slate-500">
+                <Info className="w-3 h-3 text-teal-700" />
+                <span>Tip: 10 Lakh kWh = 1 Million units (1 GWh)</span>
+              </div>
             </div>
 
             {/* Renewable Consumption */}
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="font-semibold text-slate-800">
+                <label className="font-bold text-navy-900">
                   Renewable Energy Consumed:
                 </label>
-                <span className="font-mono font-bold text-emerald-700">
+                <span className="font-mono font-extrabold text-teal-800">
                   {formatIndianNumber(renewableConsumption)} kWh ({calculation.actualPct}%)
                 </span>
               </div>
@@ -224,20 +243,23 @@ export default function RpoPage() {
                 step="10000"
                 value={renewableConsumption}
                 onChange={(e) => setRenewableConsumption(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-sky-500"
+                className="w-full rounded-xl border border-ivory-300 px-3 py-2 text-xs font-mono font-bold text-navy-950 focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
-              <p className="text-[11px] text-slate-400 mt-1">
-                Includes onsite solar/wind, green power open access (GEOA), and green tariff billing.
+              <p className="text-[11px] text-navy-700 mt-1">
+                Includes onsite rooftop solar/wind, green power open access (GEOA), and green tariff billing from your DISCOM.
               </p>
             </div>
           </div>
 
           {/* Statutory Formula Explanation Box */}
-          <div className="rounded-lg bg-slate-50 border border-slate-200 p-3 text-[11px] space-y-1">
-            <span className="font-bold text-slate-700 uppercase tracking-wider text-[10px]">
-              Statutory Formula
-            </span>
-            <div className="font-mono text-slate-900 bg-white p-2 rounded border border-slate-200">
+          <div className="rounded-xl bg-ivory-50 border border-ivory-200 p-3 text-[11px] space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-navy-950 uppercase tracking-wider text-[10px]">
+                Statutory Formula
+              </span>
+              <TermExplainer termKey="rco_obligation" variant="icon" />
+            </div>
+            <div className="font-mono text-xs text-navy-900 bg-white p-2.5 rounded-lg border border-ivory-300 shadow-2xs">
               Shortfall = (Target % × Total Consumption) − Renewable Consumption
             </div>
           </div>
@@ -246,52 +268,58 @@ export default function RpoPage() {
         {/* Right Output: KPI Cards & Compliance Meter (7 Cols) */}
         <div className="lg:col-span-7 space-y-6">
           {/* Main Status Callout */}
-          <div
-            className={`rounded-xl border p-5 shadow-xs transition-all ${
-              calculation.isCompliant
-                ? "bg-emerald-50/90 border-emerald-300 text-emerald-950"
-                : "bg-rose-50/90 border-rose-300 text-rose-950"
-            }`}
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-start gap-3">
-                {calculation.isCompliant ? (
-                  <CheckCircle2 className="w-8 h-8 text-emerald-600 flex-shrink-0" />
-                ) : (
-                  <XCircle className="w-8 h-8 text-rose-600 flex-shrink-0" />
-                )}
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-bold">
-                      {calculation.isCompliant
-                        ? "RCO Statutory Compliance Achieved"
-                        : "Renewable Compliance Shortfall Detected"}
-                    </h3>
-                    <span
-                      className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                        calculation.isCompliant
-                          ? "bg-emerald-200 text-emerald-900"
-                          : "bg-rose-200 text-rose-900"
-                      }`}
-                    >
-                      {calculation.isCompliant ? "COMPLIANT" : "DEFICIT"}
-                    </span>
+          <ErrorBoundary fallbackTitle="Compliance Meter Unavailable">
+            <div
+              className={`rounded-2xl border p-5 shadow-warm transition-all ${
+                calculation.isCompliant
+                  ? "bg-naturalGreen-50/70 border-naturalGreen-300 text-navy-950"
+                  : "bg-saffron-50/70 border-saffron-300 text-navy-950"
+              }`}
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-start gap-3">
+                  {calculation.isCompliant ? (
+                    <div className="p-2 rounded-xl bg-naturalGreen-100 text-naturalGreen-800">
+                      <CheckCircle2 className="w-7 h-7 text-naturalGreen-700 flex-shrink-0" />
+                    </div>
+                  ) : (
+                    <div className="p-2 rounded-xl bg-saffron-100 text-saffron-800">
+                      <XCircle className="w-7 h-7 text-saffron-700 flex-shrink-0" />
+                    </div>
+                  )}
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="text-lg font-extrabold text-navy-950">
+                        {calculation.isCompliant
+                          ? "RCO Statutory Compliance Achieved"
+                          : "Renewable Compliance Shortfall Detected"}
+                      </h3>
+                      <span
+                        className={`text-xs font-extrabold px-2.5 py-0.5 rounded-full ${
+                          calculation.isCompliant
+                            ? "bg-naturalGreen-200 text-naturalGreen-900 border border-naturalGreen-300"
+                            : "bg-saffron-200 text-saffron-900 border border-saffron-300"
+                        }`}
+                      >
+                        {calculation.isCompliant ? "COMPLIANT" : "DEFICIT"}
+                      </span>
+                    </div>
+                    <p className="text-xs mt-1.5 leading-relaxed text-navy-800">
+                      {calculation.isCompliant ? (
+                        <>
+                          Your organization has procured <strong>{calculation.actualPct}%</strong> clean energy against the statutory mandate of <strong>{calculation.targetPct}%</strong> for FY {selectedYear}, generating a surplus of <strong>{formatIndianNumber(calculation.surplusKwh)} kWh</strong>.
+                        </>
+                      ) : (
+                        <>
+                          Your procurement of <strong>{calculation.actualPct}%</strong> falls short of the statutory mandate (<strong>{calculation.targetPct}%</strong>). You require an additional <strong>{formatIndianNumber(calculation.shortfallKwh)} kWh</strong> of renewable power to avoid regulatory non-compliance penalties.
+                        </>
+                      )}
+                    </p>
                   </div>
-                  <p className="text-xs mt-1 leading-relaxed">
-                    {calculation.isCompliant ? (
-                      <>
-                        Your organization has procured <strong>{calculation.actualPct}%</strong> clean energy against the statutory mandate of <strong>{calculation.targetPct}%</strong> for FY {selectedYear}, generating a surplus of <strong>{formatIndianNumber(calculation.surplusKwh)} kWh</strong>.
-                      </>
-                    ) : (
-                      <>
-                        Your procurement of <strong>{calculation.actualPct}%</strong> falls short of the statutory mandate (<strong>{calculation.targetPct}%</strong>). You require an additional <strong>{formatIndianNumber(calculation.shortfallKwh)} kWh</strong> of renewable power to avoid regulatory penalties.
-                      </>
-                    )}
-                  </p>
                 </div>
               </div>
             </div>
-          </div>
+          </ErrorBoundary>
 
           {/* KPI Output Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -299,8 +327,9 @@ export default function RpoPage() {
               title={`FY ${selectedYear} Target`}
               value={`${calculation.targetPct}%`}
               subtitle={`Required: ${formatIndianNumber(calculation.requiredReKwh)} kWh`}
-              variant="default"
+              variant="navy"
               badge="Statutory"
+              explainerKey="rco_obligation"
             />
             <StatCard
               title="Your Actual RE Share"
@@ -310,7 +339,7 @@ export default function RpoPage() {
                 value: `${calculation.complianceRatioPct}% of Target`,
                 trend: calculation.isCompliant ? "up" : "down",
               }}
-              variant={calculation.isCompliant ? "emerald" : "amber"}
+              variant={calculation.isCompliant ? "teal" : "amber"}
             />
             <StatCard
               title={calculation.isCompliant ? "Surplus RE (kWh)" : "Shortfall (kWh)"}
@@ -320,27 +349,27 @@ export default function RpoPage() {
                   ? "Eligible for REC issuance"
                   : `Equivalent to ${calculation.recEquivalentPcs} RECs`
               }
-              variant={calculation.isCompliant ? "emerald" : "amber"}
+              variant={calculation.isCompliant ? "teal" : "amber"}
             />
           </div>
 
           {/* Compliance Visual Progress Meter */}
-          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs space-y-3">
+          <div className="rounded-2xl border border-ivory-300 bg-white p-5 shadow-warm space-y-3">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-slate-800">
+              <span className="font-bold text-navy-950">
                 Compliance Gauge vs Mandate ({calculation.actualPct}% / {calculation.targetPct}%)
               </span>
-              <span className="font-mono font-bold text-slate-700">
+              <span className="font-mono font-extrabold text-navy-950">
                 {calculation.complianceRatioPct}% Fulfilled
               </span>
             </div>
 
-            <div className="relative h-6 w-full rounded-full bg-slate-100 overflow-hidden border border-slate-200">
+            <div className="relative h-6 w-full rounded-full bg-ivory-100 overflow-hidden border border-ivory-300 shadow-inner">
               {/* Progress bar */}
               <div
                 style={{ width: `${Math.min(100, (calculation.actualPct / 50) * 100)}%` }}
                 className={`h-full transition-all duration-500 flex items-center justify-end pr-2 text-[10px] font-bold text-white ${
-                  calculation.isCompliant ? "bg-emerald-600" : "bg-amber-500"
+                  calculation.isCompliant ? "bg-teal-700" : "bg-saffron-600"
                 }`}
               >
                 {calculation.actualPct > 4 ? `${calculation.actualPct}%` : ""}
@@ -348,13 +377,13 @@ export default function RpoPage() {
               {/* Target Marker Needle */}
               <div
                 style={{ left: `${(calculation.targetPct / 50) * 100}%` }}
-                className="absolute top-0 bottom-0 w-1 bg-slate-900 z-10"
+                className="absolute top-0 bottom-0 w-1 bg-navy-950 z-10"
                 title={`Target: ${calculation.targetPct}%`}
               />
             </div>
-            <div className="flex justify-between text-[10px] text-slate-400 font-mono">
+            <div className="flex justify-between text-[10px] text-slate-500 font-mono">
               <span>0%</span>
-              <span className="text-slate-900 font-bold">▲ Target: {calculation.targetPct}%</span>
+              <span className="text-navy-950 font-bold">▲ Mandated Target: {calculation.targetPct}%</span>
               <span>50%</span>
             </div>
           </div>
@@ -367,6 +396,7 @@ export default function RpoPage() {
         subtitle="Your position is dynamically plotted on the statutory curve for the selected financial year"
         source={rpoConfig.authority}
         lastUpdated={rpoConfig.last_updated}
+        explainerKey="rco_obligation"
       >
         <div className="h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -374,32 +404,37 @@ export default function RpoPage() {
               data={trajectoryChartData}
               margin={{ top: 20, right: 30, left: 10, bottom: 5 }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="year" fontSize={11} />
-              <YAxis domain={[0, 50]} fontSize={11} tickFormatter={(val) => `${val}%`} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
+              <XAxis dataKey="year" fontSize={11} stroke="#64748B" />
+              <YAxis domain={[0, 50]} fontSize={11} tickFormatter={(val) => `${val}%`} stroke="#64748B" />
               <Tooltip
                 formatter={(value: any, name: any) => [`${value}%`, name]}
-                contentStyle={{ backgroundColor: "#ffffff", borderRadius: "8px", fontSize: "12px", border: "1px solid #e2e8f0" }}
+                contentStyle={{
+                  backgroundColor: "#ffffff",
+                  borderRadius: "10px",
+                  fontSize: "12px",
+                  border: "1px solid #CBD5E1",
+                }}
               />
               <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }} />
               <Line
                 type="monotone"
                 dataKey="Statutory RCO Target %"
-                stroke="#059669"
+                stroke="#0F766E"
                 strokeWidth={3}
-                dot={{ r: 4, fill: "#059669" }}
+                dot={{ r: 4, fill: "#0F766E" }}
               />
               <Line
                 type="monotone"
                 dataKey="Wind Target %"
-                stroke="#10b981"
+                stroke="#2563EB"
                 strokeDasharray="3 3"
                 strokeWidth={1.5}
               />
               <Line
                 type="monotone"
                 dataKey="Hydro Target %"
-                stroke="#2563eb"
+                stroke="#7C3AED"
                 strokeDasharray="3 3"
                 strokeWidth={1.5}
               />
@@ -408,7 +443,7 @@ export default function RpoPage() {
                 x={selectedYear}
                 y={calculation.actualPct}
                 r={8}
-                fill={calculation.isCompliant ? "#059669" : "#e11d48"}
+                fill={calculation.isCompliant ? "#0F766E" : "#D97706"}
                 stroke="#ffffff"
                 strokeWidth={2}
                 label={{
@@ -416,7 +451,7 @@ export default function RpoPage() {
                   position: "top",
                   fontSize: 11,
                   fontWeight: "bold",
-                  fill: calculation.isCompliant ? "#047857" : "#be123c",
+                  fill: calculation.isCompliant ? "#0F766E" : "#B45309",
                 }}
               />
             </LineChart>
@@ -426,22 +461,22 @@ export default function RpoPage() {
 
       {/* Recommended Procurement Options to Close Shortfall */}
       {!calculation.isCompliant && (
-        <div className="rounded-xl border border-amber-300 bg-amber-50/60 p-5 space-y-3">
-          <h3 className="text-sm font-bold text-amber-950 flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-amber-700" />
+        <div className="rounded-2xl border border-saffron-300 bg-saffron-50/70 p-5 space-y-3 shadow-warm">
+          <h3 className="text-sm font-bold text-navy-950 flex items-center gap-1.5">
+            <Sparkles className="w-4 h-4 text-saffron-700" />
             <span>Recommended Compliance Actions for {entityType}</span>
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-700">
-            <div className="bg-white p-3 rounded-lg border border-amber-200">
-              <strong className="block text-slate-900 mb-1">1. Green Day-Ahead Market (IEX GDAM)</strong>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-navy-800">
+            <div className="bg-white p-3.5 rounded-xl border border-ivory-300 shadow-2xs">
+              <strong className="block text-navy-950 mb-1">1. Green Day-Ahead Market (IEX GDAM)</strong>
               Purchase {formatIndianNumber(calculation.shortfallKwh)} units directly through power exchanges on 15-minute delivery contracts.
             </div>
-            <div className="bg-white p-3 rounded-lg border border-amber-200">
-              <strong className="block text-slate-900 mb-1">2. Buy Renewable Energy Certificates (RECs)</strong>
-              Surrender {calculation.recEquivalentPcs} RECs via national registry to offset statutory obligation without physical wheeling.
+            <div className="bg-white p-3.5 rounded-xl border border-ivory-300 shadow-2xs">
+              <strong className="block text-navy-950 mb-1">2. Buy Renewable Energy Certificates (RECs)</strong>
+              Surrender {calculation.recEquivalentPcs} RECs via the national registry to offset statutory obligation without physical wheeling.
             </div>
-            <div className="bg-white p-3 rounded-lg border border-amber-200">
-              <strong className="block text-slate-900 mb-1">3. Green Energy Open Access (GEOA)</strong>
+            <div className="bg-white p-3.5 rounded-xl border border-ivory-300 shadow-2xs">
+              <strong className="block text-navy-950 mb-1">3. Green Energy Open Access (GEOA)</strong>
               Contract with an off-site solar/wind developer under the relaxed 100 kW minimum load open-access rules.
             </div>
           </div>

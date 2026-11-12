@@ -48,7 +48,7 @@ const isConfigured = Boolean(
 
 async function runSeed() {
   console.log("=================================================");
-  console.log(" India Green Grid - Data Seeder (CodeSpark 2026)");
+  console.log(" India Green Grid - Statutory Data Seeder");
   console.log("=================================================");
 
   // Read data and config files

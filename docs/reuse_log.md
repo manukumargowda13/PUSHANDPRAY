@@ -1,7 +1,7 @@
 # Reuse and Authorship Log
 
-**Project**: India Green Grid  
-**Hackathon**: CodeSpark 2026 (12-Hour Sprint)  
+**Project**: India Green Grid — National Clean Energy Decision-Support Platform  
+**Platform Version**: 1.0.0  
 **Date**: November 2026  
 
 ---

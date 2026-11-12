@@ -1,6 +1,6 @@
 # Data Dictionary - India Green Grid
 
-**Project**: India Green Grid (CodeSpark 2026 Hackathon)  
+**Project**: India Green Grid — National Clean Energy Decision-Support Platform  
 **Database**: PostgreSQL 15 / Supabase  
 **Storage Engine**: Normalized relational tables with JSON snapshot fallbacks  
 **Version**: 1.0.0  
