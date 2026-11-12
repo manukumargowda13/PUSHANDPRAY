@@ -1,0 +1,41 @@
+name: Daily Energy Data Scraper
+
+on:
+  schedule:
+    # Runs daily at 18:00 UTC (11:30 PM IST), shortly after NPP releases preceding day generation figures
+    - cron: '0 18 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  scrape-and-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r scraper/requirements.txt
+
+      - name: Execute Daily Scrapers
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          python scraper/main.py
+
+      - name: Commit and Push Updated Snapshots
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(data): auto-update CEA and NPP energy snapshots [skip ci]"
+          file_pattern: "data/*.json"
+          commit_user_name: "IndiaGreenGrid-Bot"
+          commit_user_email: "bot@indiagreengrid.org"

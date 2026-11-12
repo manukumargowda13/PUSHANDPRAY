@@ -1,0 +1,52 @@
+{
+  "framework": "Renewable Consumption Obligation (RCO) / Renewable Purchase Obligation (RPO)",
+  "authority": "Ministry of Power & Bureau of Energy Efficiency (BEE), Govt. of India",
+  "statutory_basis": "Energy Conservation Act, 2001 (amended 2022) & Electricity Act, 2003",
+  "last_updated": "2024-04-01",
+  "current_year": "2024-25",
+  "note": "Under the amended Energy Conservation Act, the framework transitions from state-by-state RPO to a unified national Renewable Consumption Obligation (RCO) applying to all designated consumers, open-access consumers, and DISCOMs.",
+  "trajectory": [
+    {
+      "year": "2024-25",
+      "wind_pct": 0.67,
+      "hydro_pct": 0.38,
+      "other_re_pct": 28.86,
+      "total_pct": 29.91
+    },
+    {
+      "year": "2025-26",
+      "wind_pct": 1.45,
+      "hydro_pct": 1.49,
+      "other_re_pct": 30.07,
+      "total_pct": 33.01
+    },
+    {
+      "year": "2026-27",
+      "wind_pct": 2.22,
+      "hydro_pct": 2.60,
+      "other_re_pct": 31.13,
+      "total_pct": 35.95
+    },
+    {
+      "year": "2027-28",
+      "wind_pct": 3.00,
+      "hydro_pct": 3.71,
+      "other_re_pct": 32.10,
+      "total_pct": 38.81
+    },
+    {
+      "year": "2028-29",
+      "wind_pct": 3.78,
+      "hydro_pct": 4.82,
+      "other_re_pct": 32.76,
+      "total_pct": 41.36
+    },
+    {
+      "year": "2029-30",
+      "wind_pct": 4.55,
+      "hydro_pct": 5.93,
+      "other_re_pct": 32.85,
+      "total_pct": 43.33
+    }
+  ]
+}

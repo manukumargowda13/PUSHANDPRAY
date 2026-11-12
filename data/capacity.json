@@ -1,0 +1,123 @@
+{
+  "source": "Central Electricity Authority (CEA) - Installed Capacity Report",
+  "as_of": "2024-10-31",
+  "unit": "MW",
+  "is_sample_data": false,
+  "citation": "Executive Summary on Power Sector, CEA, Ministry of Power, Govt. of India",
+  "national_summary": {
+    "total_mw": 452693,
+    "fossil_mw": 243207,
+    "non_fossil_mw": 209486,
+    "fossil_share_pct": 53.72,
+    "non_fossil_share_pct": 46.28,
+    "by_source": [
+      {
+        "source": "Coal",
+        "category": "Fossil",
+        "mw": 217580,
+        "share_pct": 48.06,
+        "color": "#374151"
+      },
+      {
+        "source": "Solar",
+        "category": "Renewable",
+        "mw": 90760,
+        "share_pct": 20.05,
+        "color": "#eab308"
+      },
+      {
+        "source": "Hydro",
+        "category": "Clean/Non-Fossil",
+        "mw": 46928,
+        "share_pct": 10.37,
+        "color": "#2563eb"
+      },
+      {
+        "source": "Wind",
+        "category": "Renewable",
+        "mw": 47360,
+        "share_pct": 10.46,
+        "color": "#10b981"
+      },
+      {
+        "source": "Gas",
+        "category": "Fossil",
+        "mw": 25038,
+        "share_pct": 5.53,
+        "color": "#d97706"
+      },
+      {
+        "source": "Nuclear",
+        "category": "Clean/Non-Fossil",
+        "mw": 8180,
+        "share_pct": 1.81,
+        "color": "#9333ea"
+      },
+      {
+        "source": "Bio Power & Others",
+        "category": "Renewable",
+        "mw": 16458,
+        "share_pct": 3.64,
+        "color": "#14b8a6"
+      },
+      {
+        "source": "Diesel",
+        "category": "Fossil",
+        "mw": 589,
+        "share_pct": 0.13,
+        "color": "#6b7280"
+      }
+    ]
+  },
+  "state_snapshots": [
+    {
+      "state": "Rajasthan",
+      "total_mw": 42150,
+      "solar_mw": 23400,
+      "wind_mw": 5190,
+      "coal_mw": 9680,
+      "hydro_mw": 1980,
+      "other_mw": 1900
+    },
+    {
+      "state": "Gujarat",
+      "total_mw": 49200,
+      "solar_mw": 14200,
+      "wind_mw": 11800,
+      "coal_mw": 15800,
+      "gas_mw": 5800,
+      "hydro_mw": 800,
+      "other_mw": 800
+    },
+    {
+      "state": "Maharashtra",
+      "total_mw": 46800,
+      "solar_mw": 6200,
+      "wind_mw": 5200,
+      "coal_mw": 26400,
+      "gas_mw": 3200,
+      "hydro_mw": 3300,
+      "other_mw": 2500
+    },
+    {
+      "state": "Tamil Nadu",
+      "total_mw": 38900,
+      "solar_mw": 8400,
+      "wind_mw": 10500,
+      "coal_mw": 13200,
+      "hydro_mw": 2300,
+      "nuclear_mw": 2440,
+      "other_mw": 2060
+    },
+    {
+      "state": "Karnataka",
+      "total_mw": 32400,
+      "solar_mw": 9200,
+      "wind_mw": 6100,
+      "coal_mw": 9800,
+      "hydro_mw": 3700,
+      "nuclear_mw": 880,
+      "other_mw": 2720
+    }
+  ]
+}

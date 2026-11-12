@@ -1,0 +1,94 @@
+{
+  "source": "State Electricity Regulatory Commissions (SERC Tariff Orders 2024-25)",
+  "last_updated": "2024-11-01",
+  "default_annual_escalation_pct": 4.5,
+  "states": {
+    "Maharashtra": {
+      "state_code": "MH",
+      "discom": "MSEDCL",
+      "fixed_charge_per_kw": 128,
+      "average_tariff_inr": 8.15,
+      "slabs": [
+        { "min_units": 0, "max_units": 100, "rate": 5.88 },
+        { "min_units": 101, "max_units": 300, "rate": 11.46 },
+        { "min_units": 301, "max_units": 500, "rate": 15.72 },
+        { "min_units": 501, "max_units": 999999, "rate": 17.81 }
+      ]
+    },
+    "Gujarat": {
+      "state_code": "GJ",
+      "discom": "UGVCL / DGVCL / PGVCL / MGVCL",
+      "fixed_charge_per_kw": 70,
+      "average_tariff_inr": 6.20,
+      "slabs": [
+        { "min_units": 0, "max_units": 100, "rate": 3.75 },
+        { "min_units": 101, "max_units": 250, "rate": 4.80 },
+        { "min_units": 251, "max_units": 500, "rate": 5.95 },
+        { "min_units": 501, "max_units": 999999, "rate": 6.85 }
+      ]
+    },
+    "Karnataka": {
+      "state_code": "KA",
+      "discom": "BESCOM / MESCOM",
+      "fixed_charge_per_kw": 110,
+      "average_tariff_inr": 7.45,
+      "slabs": [
+        { "min_units": 0, "max_units": 100, "rate": 4.75 },
+        { "min_units": 101, "max_units": 200, "rate": 7.00 },
+        { "min_units": 201, "max_units": 500, "rate": 8.50 },
+        { "min_units": 501, "max_units": 999999, "rate": 9.25 }
+      ]
+    },
+    "Tamil Nadu": {
+      "state_code": "TN",
+      "discom": "TANGEDCO",
+      "fixed_charge_per_kw": 50,
+      "average_tariff_inr": 6.80,
+      "slabs": [
+        { "min_units": 0, "max_units": 100, "rate": 0.00 },
+        { "min_units": 101, "max_units": 200, "rate": 2.25 },
+        { "min_units": 201, "max_units": 400, "rate": 4.50 },
+        { "min_units": 401, "max_units": 500, "rate": 6.00 },
+        { "min_units": 501, "max_units": 999999, "rate": 8.00 }
+      ]
+    },
+    "Delhi": {
+      "state_code": "DL",
+      "discom": "BSES Rajdhani / Yamuna / TPDDL",
+      "fixed_charge_per_kw": 60,
+      "average_tariff_inr": 6.50,
+      "slabs": [
+        { "min_units": 0, "max_units": 200, "rate": 3.00 },
+        { "min_units": 201, "max_units": 400, "rate": 4.50 },
+        { "min_units": 401, "max_units": 800, "rate": 6.50 },
+        { "min_units": 801, "max_units": 999999, "rate": 8.00 }
+      ]
+    },
+    "Rajasthan": {
+      "state_code": "RJ",
+      "discom": "JVVNL / AVVNL / JdVVNL",
+      "fixed_charge_per_kw": 100,
+      "average_tariff_inr": 7.20,
+      "slabs": [
+        { "min_units": 0, "max_units": 100, "rate": 4.75 },
+        { "min_units": 101, "max_units": 150, "rate": 6.50 },
+        { "min_units": 151, "max_units": 300, "rate": 7.35 },
+        { "min_units": 301, "max_units": 500, "rate": 7.65 },
+        { "min_units": 501, "max_units": 999999, "rate": 7.95 }
+      ]
+    },
+    "Uttar Pradesh": {
+      "state_code": "UP",
+      "discom": "UPPCL",
+      "fixed_charge_per_kw": 110,
+      "average_tariff_inr": 6.90,
+      "slabs": [
+        { "min_units": 0, "max_units": 100, "rate": 3.35 },
+        { "min_units": 101, "max_units": 150, "rate": 3.85 },
+        { "min_units": 151, "max_units": 300, "rate": 5.00 },
+        { "min_units": 301, "max_units": 500, "rate": 6.00 },
+        { "min_units": 501, "max_units": 999999, "rate": 7.00 }
+      ]
+    }
+  }
+}

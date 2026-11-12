@@ -1,0 +1,18 @@
+{
+  "source": "Central Electricity Authority (CEA) CO2 Baseline Database for Indian Power Sector (User Guide v19.0)",
+  "last_updated": "2024-03-31",
+  "grid_emission_factor_kg_co2_per_kwh": 0.716,
+  "coal_thermal_emission_factor_kg_co2_per_kwh": 0.985,
+  "trees_equivalent_per_ton_co2": 45,
+  "solar_assumptions": {
+    "sq_ft_per_kw": 100,
+    "sq_m_per_kw": 9.29,
+    "annual_generation_kwh_per_kw": 1460,
+    "daily_generation_kwh_per_kw": 4.0,
+    "annual_panel_degradation_pct": 0.7,
+    "system_lifespan_years": 25,
+    "inverter_replacement_cost_pct": 12,
+    "inverter_replacement_year": 12,
+    "annual_om_cost_pct": 1.5
+  }
+}

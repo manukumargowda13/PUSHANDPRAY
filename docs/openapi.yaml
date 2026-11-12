@@ -1,0 +1,288 @@
+openapi: 3.0.3
+info:
+  title: India Green Grid API
+  description: Public Energy Decision-Support Platform API (CodeSpark 2026 Hackathon MVP). Exposes rooftop solar sizing and subsidy calculations, energy mix snapshots, and system health status.
+  version: 1.0.0
+  contact:
+    name: India Green Grid Engineering Team
+    url: https://github.com/india-green-grid
+servers:
+  - url: http://localhost:3000
+    description: Local Next.js development server
+  - url: https://india-green-grid.vercel.app
+    description: Vercel production deployment
+
+paths:
+  /api/health:
+    get:
+      summary: System Health & Offline Fallback Status
+      description: Returns service health, application version, Supabase connectivity status, and offline fallback readiness.
+      operationId: getHealthStatus
+      responses:
+        '200':
+          description: Service is healthy and operational
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  app:
+                    type: string
+                    example: India Green Grid
+                  version:
+                    type: string
+                    example: 0.1.0-mvp
+                  hackathon:
+                    type: string
+                    example: CodeSpark 2026
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: '2026-11-12T12:00:00.000Z'
+                  supabase_configured:
+                    type: boolean
+                    example: false
+                  offline_fallback_ready:
+                    type: boolean
+                    example: true
+
+  /api/solar:
+    get:
+      summary: Calculate Rooftop Solar ROI & Subsidies (Query Parameters)
+      description: Calculates system sizing (kW), PM Surya Ghar Central CFA, state top-up subsidies, net cost, payback period, and 25-year financial savings using GET query parameters.
+      operationId: calculateSolarRoiGet
+      parameters:
+        - name: state
+          in: query
+          required: false
+          schema:
+            type: string
+            default: Maharashtra
+            enum: [Maharashtra, Gujarat, Karnataka, Tamil Nadu, Delhi, Rajasthan, Uttar Pradesh]
+          description: State jurisdiction for SERC slab tariffs and state top-up subsidies
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [units, bill]
+            default: units
+          description: Input metric type (units in kWh or monthly electricity bill in INR)
+        - name: value
+          in: query
+          required: false
+          schema:
+            type: number
+            default: 300
+          description: Monthly electricity units consumed or monthly bill amount in INR
+        - name: roofArea
+          in: query
+          required: false
+          schema:
+            type: number
+            default: 400
+          description: Available shadow-free rooftop area in square feet
+      responses:
+        '200':
+          description: Calculation completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolarCalculationResponse'
+        '400':
+          description: Invalid input parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Calculate Rooftop Solar ROI & Subsidies (JSON Body)
+      description: Detailed calculation endpoint accepting JSON body with optional advanced parameters for tariff inflation and panel degradation rates.
+      operationId: calculateSolarRoiPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - state
+                - value
+              properties:
+                state:
+                  type: string
+                  example: Gujarat
+                  description: State jurisdiction
+                monthlyBillOrUnits:
+                  type: string
+                  enum: [units, bill]
+                  default: bill
+                  example: bill
+                value:
+                  type: number
+                  example: 3500
+                  description: Monthly bill in INR or units in kWh
+                roofAreaSqFt:
+                  type: number
+                  default: 400
+                  example: 450
+                  description: Shadow-free rooftop area in square feet
+                tariffInflationPct:
+                  type: number
+                  default: 4.5
+                  example: 4.5
+                  description: Annual electricity tariff escalation rate percentage
+                panelDegradationPct:
+                  type: number
+                  default: 0.7
+                  example: 0.7
+                  description: Annual solar panel output degradation percentage
+      responses:
+        '200':
+          description: Calculation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolarCalculationResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    SolarCalculationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        source:
+          type: string
+          example: MNRE PM Surya Ghar & SERC Tariffs
+        last_updated:
+          type: string
+          example: '2024-11-01'
+        data:
+          type: object
+          properties:
+            state:
+              type: string
+              example: Maharashtra
+            monthlyUnits:
+              type: number
+              example: 350
+            monthlyBillEstimatedInr:
+              type: number
+              example: 3500
+            recommendedKw:
+              type: number
+              example: 2.9
+            roofAreaProvidedSqFt:
+              type: number
+              example: 400
+            roofAreaRequiredSqFt:
+              type: number
+              example: 290
+            roofAreaConstrained:
+              type: boolean
+              example: false
+            benchmarkCostPerKwInr:
+              type: number
+              example: 55000
+            grossSystemCostInr:
+              type: number
+              example: 159500
+            centralSubsidyInr:
+              type: number
+              example: 76200
+            stateSubsidyInr:
+              type: number
+              example: 0
+            totalSubsidyInr:
+              type: number
+              example: 76200
+            netCostInr:
+              type: number
+              example: 83300
+            annualGenerationYear1Kwh:
+              type: number
+              example: 4234
+            dailyGenerationAverageKwh:
+              type: number
+              example: 11.6
+            firstYearSavingsInr:
+              type: number
+              example: 34507
+            paybackPeriodYears:
+              type: number
+              example: 2.4
+            lifetimeTwentyFiveYearSavingsInr:
+              type: number
+              example: 1245000
+            co2AvoidedTonsPerYear:
+              type: number
+              example: 3.03
+            twentyFiveYearCo2AvoidedTons:
+              type: number
+              example: 69.4
+            treesEquivalent:
+              type: number
+              example: 136
+            yearlyProjection:
+              type: array
+              items:
+                $ref: '#/components/schemas/YearProjectionItem'
+            tariffDetails:
+              type: object
+              properties:
+                discom:
+                  type: string
+                  example: MSEDCL
+                averageTariffInr:
+                  type: number
+                  example: 8.15
+
+    YearProjectionItem:
+      type: object
+      properties:
+        year:
+          type: integer
+          example: 1
+        solarGenerationKwh:
+          type: number
+          example: 4234
+        gridTariffPerKwh:
+          type: number
+          example: 8.15
+        annualSavingsInr:
+          type: number
+          example: 34507
+        omCostInr:
+          type: number
+          example: 2393
+        inverterReplacementInr:
+          type: number
+          example: 0
+        netAnnualCashFlowInr:
+          type: number
+          example: 32114
+        cumulativeSavingsInr:
+          type: number
+          example: -51186
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          example: Failed to calculate solar ROI

@@ -1,0 +1,77 @@
+{
+  "scheme_name": "PM Surya Ghar: Muft Bijli Yojana (Central Financial Assistance)",
+  "source": "Ministry of New and Renewable Energy (MNRE), Govt. of India",
+  "last_updated": "2024-10-15",
+  "benchmark_cost_per_kw_inr": 55000,
+  "central_subsidy_slabs": [
+    {
+      "min_kw": 0,
+      "max_kw": 1,
+      "subsidy_per_kw_inr": 30000,
+      "max_total_inr": 30000
+    },
+    {
+      "min_kw": 1,
+      "max_kw": 2,
+      "subsidy_per_kw_inr": 30000,
+      "max_total_inr": 60000
+    },
+    {
+      "min_kw": 2,
+      "max_kw": 3,
+      "subsidy_per_kw_inr": 18000,
+      "max_total_inr": 78000
+    },
+    {
+      "min_kw": 3,
+      "max_kw": 9999,
+      "subsidy_per_kw_inr": 0,
+      "max_total_inr": 78000,
+      "notes": "Capped at ₹78,000 for systems exceeding 3 kW in residential sector"
+    }
+  ],
+  "state_topups": {
+    "Delhi": {
+      "type": "fixed_topup",
+      "per_kw_inr": 2000,
+      "max_inr": 10000,
+      "name": "Delhi Solar Policy 2024 Top-up"
+    },
+    "Uttar Pradesh": {
+      "type": "fixed_topup",
+      "per_kw_inr": 15000,
+      "max_inr": 30000,
+      "name": "UP NEDA Solar Rooftop State Subsidy"
+    },
+    "Gujarat": {
+      "type": "percentage_topup",
+      "per_kw_inr": 0,
+      "max_inr": 0,
+      "name": "Surya Gujarat Scheme (aligned with PM Surya Ghar)"
+    },
+    "Maharashtra": {
+      "type": "fixed_topup",
+      "per_kw_inr": 0,
+      "max_inr": 0,
+      "name": "Direct CFA under PM Surya Ghar"
+    },
+    "Karnataka": {
+      "type": "fixed_topup",
+      "per_kw_inr": 0,
+      "max_inr": 0,
+      "name": "Direct CFA under PM Surya Ghar"
+    },
+    "Tamil Nadu": {
+      "type": "fixed_topup",
+      "per_kw_inr": 0,
+      "max_inr": 0,
+      "name": "TEDA Rooftop Net Metering Support"
+    },
+    "Rajasthan": {
+      "type": "fixed_topup",
+      "per_kw_inr": 0,
+      "max_inr": 0,
+      "name": "RRECL Solar Rooftop Support"
+    }
+  }
+}

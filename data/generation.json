@@ -1,0 +1,39 @@
+{
+  "source": "National Power Portal (NPP) & Grid-India (POSOCO) Daily Operational Reports",
+  "as_of": "2024-11-10",
+  "unit": "GWh",
+  "is_sample_data": false,
+  "citation": "Daily Generation Summary, National Power Portal (NPP), Ministry of Power",
+  "daily_snapshot": {
+    "date": "2024-11-10",
+    "total_gwh": 4680.5,
+    "thermal_coal_gwh": 3315.2,
+    "thermal_coal_share_pct": 70.83,
+    "renewables_gwh": 655.4,
+    "renewables_share_pct": 14.00,
+    "total_clean_gwh": 1184.8,
+    "total_clean_share_pct": 25.31,
+    "by_source": [
+      { "source": "Coal", "gwh": 3315.2, "share_pct": 70.83, "color": "#374151" },
+      { "source": "Solar", "gwh": 365.4, "share_pct": 7.81, "color": "#eab308" },
+      { "source": "Hydro", "gwh": 395.0, "share_pct": 8.44, "color": "#2563eb" },
+      { "source": "Wind", "gwh": 235.8, "share_pct": 5.04, "color": "#10b981" },
+      { "source": "Nuclear", "gwh": 134.4, "share_pct": 2.87, "color": "#9333ea" },
+      { "source": "Gas", "gwh": 180.5, "share_pct": 3.86, "color": "#d97706" },
+      { "source": "Other RE", "gwh": 54.2, "share_pct": 1.16, "color": "#14b8a6" }
+    ]
+  },
+  "recent_daily_trend": [
+    { "date": "2024-10-12", "coal": 3280, "solar": 350, "wind": 180, "hydro": 420, "nuclear": 130, "gas": 175, "other": 50, "total": 4585, "re_share_pct": 12.6, "coal_share_pct": 71.5 },
+    { "date": "2024-10-15", "coal": 3320, "solar": 360, "wind": 195, "hydro": 410, "nuclear": 132, "gas": 180, "other": 52, "total": 4649, "re_share_pct": 13.1, "coal_share_pct": 71.4 },
+    { "date": "2024-10-18", "coal": 3390, "solar": 355, "wind": 170, "hydro": 395, "nuclear": 135, "gas": 170, "other": 51, "total": 4666, "re_share_pct": 12.3, "coal_share_pct": 72.6 },
+    { "date": "2024-10-21", "coal": 3410, "solar": 370, "wind": 210, "hydro": 380, "nuclear": 133, "gas": 185, "other": 53, "total": 4741, "re_share_pct": 13.3, "coal_share_pct": 71.9 },
+    { "date": "2024-10-24", "coal": 3350, "solar": 365, "wind": 225, "hydro": 375, "nuclear": 131, "gas": 178, "other": 52, "total": 4676, "re_share_pct": 13.7, "coal_share_pct": 71.6 },
+    { "date": "2024-10-27", "coal": 3290, "solar": 380, "wind": 240, "hydro": 390, "nuclear": 134, "gas": 172, "other": 54, "total": 4660, "re_share_pct": 14.5, "coal_share_pct": 70.6 },
+    { "date": "2024-10-30", "coal": 3360, "solar": 375, "wind": 230, "hydro": 385, "nuclear": 130, "gas": 182, "other": 53, "total": 4715, "re_share_pct": 14.0, "coal_share_pct": 71.3 },
+    { "date": "2024-11-02", "coal": 3340, "solar": 360, "wind": 220, "hydro": 390, "nuclear": 132, "gas": 179, "other": 51, "total": 4672, "re_share_pct": 13.5, "coal_share_pct": 71.5 },
+    { "date": "2024-11-05", "coal": 3300, "solar": 370, "wind": 245, "hydro": 405, "nuclear": 135, "gas": 175, "other": 52, "total": 4682, "re_share_pct": 14.2, "coal_share_pct": 70.5 },
+    { "date": "2024-11-08", "coal": 3295, "solar": 368, "wind": 250, "hydro": 400, "nuclear": 133, "gas": 176, "other": 53, "total": 4675, "re_share_pct": 14.3, "coal_share_pct": 70.5 },
+    { "date": "2024-11-10", "coal": 3315, "solar": 365, "wind": 236, "hydro": 395, "nuclear": 134, "gas": 181, "other": 54, "total": 4680, "re_share_pct": 14.0, "coal_share_pct": 70.8 }
+  ]
+}
